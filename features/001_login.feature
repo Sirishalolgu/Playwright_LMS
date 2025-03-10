@@ -1,5 +1,0 @@
-Feature:
-Given
-When
-Then
-
