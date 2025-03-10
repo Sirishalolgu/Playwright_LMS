@@ -3,8 +3,9 @@ import { defineConfig, devices } from '@playwright/test';
 import { defineBddConfig } from 'playwright-bdd';
 
 const testDir = defineBddConfig({
-  features: 'features/*.feature',
-  steps: 'steps/*.js',
+  features: 'features/loginLMS.feature',
+  steps: 'stepDefinition/loginLMS.steps.js',
+  tags: "@spellcheck"
 });
 /**
  * Read environment variables from file.
