@@ -7,6 +7,7 @@ class LoginPage{
         this.programButton = page.locator("#program");
     }
     async goto(){       
+        console.log("I am in login page");
         await this.page.goto("https://playwright-frontend-app-a9ea85794ad9.herokuapp.com/login");
         await this.page.waitForLoadState('networkidle');
     }

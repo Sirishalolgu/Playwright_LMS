@@ -9,8 +9,8 @@ class ProgramPage {
     async clickOnProgram(){
         console.log("program button name is = " + await this.programButton.textContent());
         await this.programButton.click();
-        await this.page.waitForTimeout(10000);
-        console.log(await this.page.getLmsTitle.title());        
+        //await this.page.waitForTimeout(10000);
+       // console.log(await this.page.getLmsTitle.title());        
     }
     getLocator(){
         return this.programButton;

@@ -1,34 +1,37 @@
-const{Given, When, Then} = require('@cucumber/cucumber');
-const { POManager } = require('../../pageObject/POManager');
-const { ProgramPage } = require('../../pageObject/ProgramPage');
+//const{Given, When, Then} = require('@cucumber/cucumber');
+import { createBdd } from 'playwright-bdd';
+
+const{Given, When, Then} = createBdd();
+const { POManager } = require('../pageObject/POManager');
+const { ProgramPage } = require('../pageObject/ProgramPage');
 const { expect } = require('playwright/test');
 
 let poManager;
+let programPage;
 // Given('Admin is on dashboard page after Login', function () {
 //     // Write code here that turns the phrase above into concrete actions
     
 //   });
 
   // When('Admin clicks {string} on the navigation bar', function (string) {
-    When('Admin clicks Program on the navigation bar', async function () {
-     console.log("i am on program page");
-     if(!this.page){
-      throw new Error("Page not initialized");
-    }    
-      poManager = new POManager(this.page);
-   const programPage = new ProgramPage(this.page);
-   await this.page.waitForTimeout(2000);
-   programPage.clickOnProgram();
-   await this.page.waitForLoadState('networkidle');
-   await this.page.waitForTimeout(3000);
-    console.log("program page title = "+ await this.page.title());
-   await this.page.waitForTimeout(3000);
-    console.log("program button name is = " + await this.page.locator("#button").textContent());
-  });
+When('Admin clicks Program on the navigation bar', async ({ page }) => {
+  console.log("i am on program page");
+  poManager = new POManager(page);
+  programPage = new ProgramPage(page);
+  await page.waitForTimeout(200);
+  programPage.clickOnProgram();
+  await page.waitForLoadState('networkidle');
+  await page.waitForTimeout(500);
+  console.log("program page title = " + await page.title());
+  //  await this.page.waitForTimeout(300);
+  //   console.log("program button name is = " + await this.page.locator("#button").textContent());
+});
 
-  Then('Admin should be navigated to Program module', async function () {
-   await expect(programPage.getLocator().toContainText('Program'));
-  });
+Then('Admin should be navigated to Program module', async function () {
+  const progloc = programPage.getLocator();
+  console.log("prg locator = " + await programPage.getLocator());
+  await expect(progloc).toContainText('Program');
+});
 
 //   Given('Admin is on dashboard page after Login', function () {
 //     // Write code here that turns the phrase above into concrete actions

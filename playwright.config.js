@@ -1,5 +1,6 @@
 // @ts-check
 import { defineConfig, devices } from '@playwright/test';
+import { defineBddConfig } from 'playwright-bdd';
 
 /**
  * Read environment variables from file.
@@ -12,8 +13,14 @@ import { defineConfig, devices } from '@playwright/test';
 /**
  * @see https://playwright.dev/docs/test-configuration
  */
+const testDir = defineBddConfig({
+  features: ['tests/features/01_login.feature' ,'tests/features/03_01_Navigation_MenuBar_ManageProgramPageValidation.feature'],
+  steps: ['tests/stepDefinition/Login_StepDefinition.js' ,'tests/stepDefinition/Program_Navigation_Menubar_StepDefenition.js', 'tests/hooks/hooks.js'],
+});
+
 export default defineConfig({
-  testDir: './tests',
+  // testDir: './tests',
+ testDir,
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -42,10 +49,10 @@ export default defineConfig({
 
   /* Configure projects for major browsers */
   projects: [
-    // {
-    //   name: 'chromium',
-    //   use: { ...devices['Desktop Chrome'] },
-    // },
+    {
+      name: 'chromium',
+      use: { ...devices['Desktop Chrome'] },
+    },
 
     // {
     //   name: 'firefox',
