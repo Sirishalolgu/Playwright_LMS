@@ -16,10 +16,12 @@
   "homepage": "https://github.com/Sirishalolgu/Playwright_LMS#readme",
   "description": "",
   "devDependencies": {
-    "@playwright/test": "^1.50.1",
-    "@types/node": "^22.13.9"
+    "@cucumber/cucumber": "^11.2.0",
+    "@playwright/test": "^1.51.0",
+    "@types/node": "^22.13.9",
+    "playwright-bdd": "^8.2.1"
   },
   "dependencies": {
-    "@cucumber/cucumber": "^11.2.0"
+    "cucumber": "^6.0.7"
   }
 }
