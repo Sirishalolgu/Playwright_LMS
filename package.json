@@ -2,7 +2,11 @@
   "name": "playwright_lms",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "npm run bddgen && npm run playwright-test",
+    "bddgen": "npx bddgen",
+    "playwright-test": "npx playwright test --headed"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Sirishalolgu/Playwright_LMS.git"
@@ -22,6 +26,7 @@
     "playwright-bdd": "^8.2.1"
   },
   "dependencies": {
-    "cucumber": "^6.0.7"
+    "cucumber": "^6.0.7",
+    "playwright": "^1.51.0"
   }
 }
