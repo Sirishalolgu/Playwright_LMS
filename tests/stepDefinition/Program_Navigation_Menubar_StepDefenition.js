@@ -1,4 +1,3 @@
-//const{Given, When, Then} = require('@cucumber/cucumber');
 import { createBdd } from 'playwright-bdd';
 
 const{Given, When, Then} = createBdd();
@@ -18,16 +17,18 @@ When('Admin clicks Program on the navigation bar', async ({ page }) => {
   console.log("i am on program page");
   poManager = new POManager(page);
   programPage = new ProgramPage(page);
-  await page.waitForTimeout(200);
+  await page.waitForTimeout(200);  
   programPage.clickOnProgram();
   await page.waitForLoadState('networkidle');
   await page.waitForTimeout(500);
   console.log("program page title = " + await page.title());
+ 
+ // console.log("response = " + response.json());
   //  await this.page.waitForTimeout(300);
   //   console.log("program button name is = " + await this.page.locator("#button").textContent());
 });
 
-Then('Admin should be navigated to Program module', async function () {
+Then('Admin should be navigated to Program module', async ({page}) => {
   const progloc = programPage.getLocator();
   console.log("prg locator = " + await programPage.getLocator());
   await expect(progloc).toContainText('Program');
@@ -43,10 +44,14 @@ Then('Admin should be navigated to Program module', async function () {
    
 //   });
 
-//   Then('Admin should not have any broken links for Program module', function () {
-//     // Write code here that turns the phrase above into concrete actions
+  Then('Admin should not have any broken links for Program module', async ({page}) => {
+    // await page.waitForTimeout(500);
+    // programPage.clickOnProgram();
+    await page.waitForTimeout(500);
+    //await expect(programPage.logoutButton).toBeVisible();
+    programPage.getBroken();
    
-//   });
+  });
 
 //   Given('Admin is on dashboard page after Login', function () {
 //     // Write code here that turns the phrase above into concrete actions
