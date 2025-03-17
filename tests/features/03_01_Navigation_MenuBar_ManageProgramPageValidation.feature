@@ -8,9 +8,9 @@ Feature: Navigation
   Scenario: Verify that Admin is able to navigate to Program module
     Then Admin should be navigated to Program module
 
-  # @BrokenLinks
-  # Scenario: Verify any broken links on program page
-  #   Then Admin should not have any broken links for Program module
+  @BrokenLinks
+  Scenario: Verify any broken links on program page
+    Then Admin should not have any broken links for Program module
 
   # @VefiryLMSTitle
   # Scenario: Verify heading in menu bar
