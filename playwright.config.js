@@ -1,6 +1,13 @@
 // @ts-check
 import { defineConfig, devices } from '@playwright/test';
+import { defineBddConfig } from 'playwright-bdd';
 
+const testDir = defineBddConfig({
+  
+  features: ['./tests/features/01_login.feature','./tests/features/04_01_classPageValidation.feature','tests/features/04_02_addNewClassButton.feature'],
+  steps: ['./tests/stepDefinition/Loginsteps.js','./tests/stepDefinition/classPageValidationsteps.js','tests/stepDefinition/addNewClassButtonsteps.js','./tests/hooks/hooks.js'],
+   
+});
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
@@ -13,7 +20,8 @@ import { defineConfig, devices } from '@playwright/test';
  * @see https://playwright.dev/docs/test-configuration
  */
 export default defineConfig({
-  testDir: './tests',
+  testDir,
+  //testMatch: ['**/*.feature'],
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -36,16 +44,17 @@ export default defineConfig({
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
     browserName: 'chromium',
-   // headless: false,
+    //screenshot:'on',
+    headless: false,
   
   },
 
   /* Configure projects for major browsers */
   projects: [
-    // {
-    //   name: 'chromium',
-    //   use: { ...devices['Desktop Chrome'] },
-    // },
+     {
+       name: 'chromium',
+       use: { ...devices['Desktop Chrome'] },
+     },
 
     // {
     //   name: 'firefox',
