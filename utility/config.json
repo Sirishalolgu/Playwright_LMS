@@ -1,0 +1,14 @@
+{
+  "headless": false,
+  "baseUrl": "https://playwright-frontend-app-a9ea85794ad9.herokuapp.com/",
+  "brokenLinkUrl": "http://localhost:3000/broken-link",
+  "invalidUrl": "http://localhost:3000/invalid",
+  "validUser": {
+    "username": "Playwright@gmail.com",
+    "password": "March@2025"
+  },
+  "invalidUser": {
+    "username": "invalid_user",
+    "password": "invalid_password"
+  }
+}

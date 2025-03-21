@@ -1,0 +1,16 @@
+{
+  "text": {
+    "loginPage": "LMS",
+    "errorPage": "Error",
+    "appName": "LMS - Learning Management System",
+    "companyName": "NumpyNinja"
+  },
+  "labels": {
+    "username": "User",
+    "password": "Password"
+  },
+  "routes": {
+    "login": "login",
+    "invalid": "invalid"
+  }
+}

@@ -1,232 +1,251 @@
+import { logMessage } from "../utility/logger.js";
 import { createBdd } from "playwright-bdd";
 import { expect } from "@playwright/test";
-import fs from 'fs';
-
-// Read JSON file and parse it
-const config = JSON.parse(fs.readFileSync('config.json', 'utf-8'));
-
-const { Given, When, Then } = createBdd();
+const { readJsonFile } = require("../utility/fileUtils");
+const config = readJsonFile("../utility/config.json");
+const constants = readJsonFile("../utility/constants.json");
 const LoginPage = require("../pageObject/LoginPage");
 
-let page;
-let loginPage;
+const { Given, When, Then } = createBdd();
 
-Given("The browser is open", async ({ browser }) => {
-  const context = await browser.newContext();
-  page = await context.newPage();
+const baseUrl = config.baseUrl;
+
+// ========================== Given Steps ==========================
+Given("Admin gives the correct LMS portal URL", async ({ page }) => {
+  logMessage("Step: Admin gives the correct LMS portal URL");
+  await page.goto(baseUrl + constants.routes.login);
 });
 
-Given("Admin gives the correct LMS portal URL", async () => {
-  loginPage = new LoginPage(page);
-  await loginPage.goto(
-    "https://playwright-frontend-app-a9ea85794ad9.herokuapp.com/login"
+Given("Admin gives the invalid LMS portal URL", async ({ page }) => {
+  logMessage("Step: Admin gives the invalid LMS portal URL");
+  const loginPage = new LoginPage(page);
+  const response = await loginPage.visitInvalidUrl(
+    baseUrl + constants.routes.invalid,
+    page
   );
+
+  expect(response.status()).toBeLessThan(400);
 });
 
-Given("Admin gives the invalid LMS portal URL", async () => {
-  loginPage = new LoginPage(page);
-  let response;
-  try {
-    response = await page.goto(
-      "https://playwright-frontend-app-a9ea85794ad9990.herokuapp.com/invalid",
-      { timeout: 5000 }
-    );
-  } catch (error) {
-    console.error(`Error navigating to link: ${error.message}`);
-    return; // Exit early if connection fails
-  }
-  expect(response.status()).toBeGreaterThanOrEqual(400);
+// ========================== Then Steps ==========================
+Then("Admin should land on the login page", async ({ page }) => {
+  logMessage("Step: Admin should land on the login page");
+  await expect(page).toHaveTitle(constants.text.loginPage);
 });
 
-Then("Admin should land on the login page", async () => {
-  await expect(page).toHaveTitle(/LMS/); // Replace with your title
+Then("Admin should be redirected to the login page", async ({ page }) => {
+  logMessage("Step: Admin should be redirected to the login page");
+  await expect(page).toHaveTitle(constants.text.loginPage);
 });
 
-Then("Admin should receive application error", async () => {
-  // Add assertions to verify error message or page content
-  await expect(page).toHaveTitle(/Error/);
+Then("HTTP response >= 400. Then the link is broken", async ({ page }) => {
+  logMessage("Step: Checking broken link");
+  const loginPage = new LoginPage(page);
+  const { isBroken, status } = await loginPage.isBrokenLink(
+    config.brokenLinkUrl
+  );
+  console.log(`Checked link: Status ${status}`);
+  expect(isBroken).toBe(true);
 });
 
-Then("HTTP response >= 400. Then the link is broken", async () => {
-  let response;
-  try {
-    response = await page.goto("http://localhost:3000/broken-link", {
-      timeout: 5000,
-    });
-  } catch (error) {
-    console.error(`Error navigating to link: ${error.message}`);
-    return; // Exit early if connection fails
-  }
-  expect(response.status()).toBeGreaterThanOrEqual(400);
-});
-
-Then("Admin should see correct spellings in all fields", async () => {
+Then("Admin should see correct spellings in all fields", async ({ page }) => {
+  logMessage("Step: Admin should see correct spellings in all fields");
+  const loginPage = new LoginPage(page);
   const userFieldName = await loginPage.getUserFieldLabel();
-  expect(userFieldName).toBe("User");
-
+  expect(userFieldName).toBe(constants.labels.username);
   const passwordFieldName = await loginPage.getPasswordFieldLabel();
-  expect(passwordFieldName).toBe("Password");
+  expect(passwordFieldName).toBe(constants.labels.password);
 });
 
-Then("Admin should see LMS - Learning Management System", async () => {
+Then("Admin should see LMS - Learning Management System", async ({ page }) => {
+  logMessage("Step: Admin should see LMS - Learning Management System");
+  const loginPage = new LoginPage(page);
   const appName = await loginPage.getApplicationName();
-  expect(appName).toContain("LMS - Learning Management System");
+  expect(appName).toContain(constants.text.appName);
 });
 
-Then("Admin should see company name below the app name", async () => {
-  const appName = await loginPage.getApplicationName();
-
-  // Get the expected company name from the JSON file
-  const expectedCompanyName = config.companyName;
-
-  expect(appName).toContain(expectedCompanyName);
+Then("Admin should see company name below the app name", async ({ page }) => {
+  logMessage("Step: Admin should see company name below the app name");
+  const loginPage = new LoginPage(page);
+  const compName = await loginPage.getApplicationName();
+  expect(compName).toContain(constants.text.companyName);
 });
 
 Then("Admin should see the {string}", async ({ page }, expectedText) => {
-  // Get actual text from the login page
+  logMessage(`Step: Admin should see the text "${expectedText}"`);
+  const loginPage = new LoginPage(page);
   const actualText = await loginPage.getSignInContent();
-
-  // Compare actual text with expected text
   expect(actualText.trim()).toBe(expectedText);
 });
 
-Then("Admin should see two text field", async () => {
+Then("Admin should see two text field", async ({ page }) => {
+  logMessage("Step: Admin should see two text fields");
+  const loginPage = new LoginPage(page);
   const textField = await loginPage.countTextFields();
   expect(textField).toBe(2);
 });
 
-Then("Admin should see {string} in the first text field", async ({ page }, expectedText) => {
-  const userFieldLabel = await loginPage.getUserFieldLabel();
-  expect(userFieldLabel).toBe(expectedText);
-});
-
-Then("Admin should see one dropdown", async () => {
-  const dropdown = page.locator('//select[@name="role"]');
-  await expect(dropdown).toBeVisible();
-});
-
 Then(
-  "Admin should see asterisk mark symbol next to text for mandatory fields",
-  async () => {
-    const asterisk = loginPage.asteriskUser;
-    await expect(asterisk).toBeVisible();
+  "Admin should see {string} in the first text field",
+  async ({ page }, expectedText) => {
+    logMessage(
+      `Step: Admin should see "${expectedText}" in the first text field`
+    );
+    const loginPage = new LoginPage(page);
+    const userFieldLabel = await loginPage.getUserFieldLabel();
+    expect(userFieldLabel).toBe(expectedText);
   }
 );
 
-Then('Admin should see "Password" in the second text field', async () => {
-  const passwordFieldLabel = await loginPage.getPasswordFieldLabel();
-  expect(passwordFieldLabel).toBe("Password"); // Replace with your label
-});
+Then(
+  "Admin should see asterisk mark symbol next to {string} text field",
+  async ({ page }, fieldName) => {
+    logMessage(
+      `Step: Admin should see asterisk next to "${fieldName}" text field`
+    );
+    const loginPage = new LoginPage(page);
+    const asterikLocator = await loginPage.verifyAsteriskForField(fieldName);
+    await expect(asterikLocator).toBeVisible();
+  }
+);
+
+Then(
+  "Admin should see {string} in the second text field",
+  async ({ page }, expectedText) => {
+    logMessage(
+      `Step: Admin should see "${expectedText}" in the second text field`
+    );
+    const loginPage = new LoginPage(page);
+    const passwordFieldLabel = await loginPage.getPasswordFieldLabel();
+    expect(passwordFieldLabel).toBe(expectedText);
+  }
+);
 
 Then(
   "Admin should see asterisk mark symbol next to password text",
-  async () => {
+  async ({ page }) => {
+    logMessage("Step: Admin should see asterisk mark next to password");
+    const loginPage = new LoginPage(page);
     const asterisk = loginPage.asteriskPassword;
     await expect(asterisk).toBeVisible();
   }
 );
 
 Then(
-  'Admin should see "select the role " placeholder in dropdown',
-  async () => {
-    const placeholder = await loginPage.getDropdownPlaceholder();
-    expect(placeholder).toBe("select the role "); // Replace with your placeholder
+  "Admin should see input field on the centre of the page",
+  async ({ page }) => {
+    logMessage("Step: Admin should see input field on center");
+    const loginPage = new LoginPage(page);
+    const isCentered = await loginPage.isInputFieldOnCenter();
+    expect(isCentered).toBe(true);
   }
 );
 
-Then(
-  'Admin should see "Admin , staff, student" options in dropdown',
-  async () => {
-    const options = await loginPage.getDropdownOptions();
-    expect(options).toEqual(["Admin ", "staff", "student"]); // Replace with your options
-  }
-);
-
-Then("Admin should see input field on the centre of the page", async () => {
-  const isCentered = await loginPage.isInputFieldOnCenter();
-  expect(isCentered).toBe(true);
+Then("Admin is on login Page", async ({ page }) => {
+  logMessage("Step: Admin is on login Page");
+  const loginPage = new LoginPage(page);
+  const pageUrl = await loginPage.isLoginPage();
+  expect(pageUrl).toContain(constants.routes.login);
 });
 
-Then("Admin should see login button", async () => {
+Then("Admin should see login button", async ({ page }) => {
+  logMessage("Step: Admin should see login button");
+  const loginPage = new LoginPage(page);
   const isVisible = await loginPage.isLoginButtonVisible();
   expect(isVisible).toBe(true);
 });
 
-Then("Admin should see user in gray color", async () => {
-  const isGray = await loginPage.isUserFieldDescriptiveTextVisible();
-  expect(isGray).toBe(true);
-});
+Then(
+  "Admin should see {string} in gray color",
+  async ({ page }, expectedText) => {
+    logMessage(`Step: Admin should see "${expectedText}" in gray color`);
+    const loginPage = new LoginPage(page);
+    const isGray = await loginPage.isFieldDescriptiveTextGreyedOut(
+      expectedText
+    );
+    expect(isGray).toBe(true);
+  }
+);
 
-Then("Admin should see password in gray color", async () => {
-  const isGray = await loginPage.isPasswordFieldDescriptiveTextVisible();
-  expect(isGray).toBe(true);
-});
-
+// ========================== When Steps ==========================
 When(
   "Admin enter valid data in all field and clicks login button",
-  async () => {
-    await loginPage.enterUsername("valid_user"); // Replace with valid data
-    await loginPage.enterPassword("valid_password"); // Replace with valid data
+  async ({ page }) => {
+    logMessage("Step: Admin enter valid data and clicks login");
+    const loginPage = new LoginPage(page);
+    await loginPage.enterUsername(config.validUser.username);
+    await loginPage.enterPassword(config.validUser.password);
     await loginPage.clickLogin();
   }
 );
 
-Then("Admin should land on home page", async () => {
-  // Add assertions to verify home page elements (e.g., title, content)
-  await expect(page).toHaveTitle(/Home/); // Replace with your home page title
+Then("Admin should land on home page", async ({ page }) => {
+  logMessage("Step: Admin should land on home page");
+  await expect(page).toHaveURL(config.baseUrl);
 });
 
-When("Admin enter invalid data and clicks login button", async () => {
-  await loginPage.enterUsername("invalid_user"); // Replace with invalid data
-  await loginPage.enterPassword("invalid_password"); // Replace with invalid data
+When("Admin enter invalid data and clicks login button", async ({ page }) => {
+  logMessage("Step: Admin enter invalid data and clicks login");
+  const loginPage = new LoginPage(page);
+  await loginPage.enterUsername(config.invalidUser.username);
+  await loginPage.enterPassword(config.invalidUser.password);
   await loginPage.clickLogin();
 });
 
-Then(
-  'Error message "Invalid username and password Please try again"',
-  async () => {
-    const errorMessage = await loginPage.getErrorMessage();
-    expect(errorMessage).toBe("Invalid username and password Please try again"); // Replace with your error message
+When(
+  "Admin enter value only in password and clicks login button",
+  async ({ page }) => {
+    logMessage("Step: Admin enter only password and clicks login");
+    const loginPage = new LoginPage(page);
+    await loginPage.clickUsername();
+    await loginPage.enterPassword(config.validUser.password);
+    await loginPage.clickLogin();
   }
 );
 
-When("Admin enter value only in password and clicks login button", async () => {
-  await loginPage.enterPassword("valid_password"); // Replace with valid data
-  await loginPage.clickLogin();
+Then("Error message {string}", async ({ page }, fieldName) => {
+  logMessage(`Step: Checking error message "${fieldName}"`);
+  const loginPage = new LoginPage(page);
+  const errorMessage = await loginPage.getErrorMessage();
+  expect(errorMessage.trim()).toBe(fieldName);
 });
 
-Then('Error message" Please enter your user name"', async () => {
-  const errorMessage = await loginPage.getErrorMessage();
-  expect(errorMessage).toBe("Please enter your user name"); // Replace with your error message
+Then("Error message should be {string}", async ({ page }, fieldName) => {
+  logMessage(`Step: Checking password error message "${fieldName}"`);
+  const loginPage = new LoginPage(page);
+  const errorMessage = await loginPage.getPasswordErrorMessage();
+  expect(errorMessage.trim()).toBe(fieldName);
 });
 
 When(
   "Admin enter value only in user name and clicks login button",
-  async () => {
-    await loginPage.enterUsername("valid_user"); // Replace with valid data
+  async ({ page }) => {
+    logMessage("Step: Admin enter only username and clicks login");
+    const loginPage = new LoginPage(page);
+    await loginPage.enterUsername(config.validUser.username);
+    await loginPage.clickPassword();
     await loginPage.clickLogin();
   }
 );
 
-Then('Error message" Please enter your password "', async () => {
-  const errorMessage = await loginPage.getErrorMessage();
-  expect(errorMessage).toBe("Please enter your password "); // Replace with your error message
-});
-
 When(
-  "Admin enter valid credentials  and clicks login button through keyboard",
-  async () => {
-    await loginPage.enterUsername("valid_user"); // Replace with valid data
-    await loginPage.enterPassword("valid_password"); // Replace with valid data
+  "Admin enter valid credentials and clicks login button through keyboard",
+  async ({ page }) => {
+    logMessage("Step: Admin login using keyboard");
+    const loginPage = new LoginPage(page);
+    await loginPage.enterUsername(config.validUser.username);
+    await loginPage.enterPassword(config.validUser.password);
     await loginPage.clickLoginWithKeyboard();
   }
 );
 
 When(
-  "Admin enter valid credentials  and clicks login button through mouse",
-  async () => {
-    await loginPage.enterUsername("valid_user"); // Replace with valid data
-    await loginPage.enterPassword("valid_password"); // Replace with valid data
+  "Admin enter valid credentials and clicks login button through mouse",
+  async ({ page }) => {
+    logMessage("Step: Admin login using mouse");
+    const loginPage = new LoginPage(page);
+    await loginPage.enterUsername(config.validUser.username);
+    await loginPage.enterPassword(config.validUser.password);
     await loginPage.clickLoginWithMouse();
   }
 );
