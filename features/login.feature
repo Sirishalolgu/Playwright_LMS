@@ -4,7 +4,6 @@ Feature: Login Page
     Given Admin gives the correct LMS portal URL
     Then Admin should land on the login page
 
-@spellcheck
   Scenario: Verify Admin is able to land on login page with invalid URL
     Given Admin gives the invalid LMS portal URL
     Then Admin should be redirected to the login page
