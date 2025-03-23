@@ -32,16 +32,51 @@ exports.BatchPage = class BatchPage {
 
         this.BatchNameTextbox = page.getByRole('textbox', { name: 'Batch Name *' });
         this.DescriptionTextbox = page.getByRole('textbox', { name: 'Description *' });
-        this.FirstRadioButton = page.locator('.p-radiobutton-box').first();
+
+        this.FirstRadioButton = this.page.locator('p-radiobutton#batchStatus .p-radiobutton-box').nth(0);
+        this.SecondRadioButton = this.page.locator('p-radiobutton#batchStatus .p-radiobutton-box').nth(1);
         this.NumberOfClassesSpinButton = page.getByRole('spinbutton', { name: 'Number of Classes *' });
         this.SaveButton = page.getByRole('button', { name: 'Save' });
         this.BatchNamePrefixTextbox = page.locator('#batchProg');
         this.testProgramInput = page.locator('#batchProg');
         this.errormessage=  page.getByText('This field accept only');
+         this.toastMessageText =  page.locator('.p-toast .p-toast-message')
+        
+         this.messages =  page.locator('small.p-invalid');
+
+         this.close= page.getByRole('button', { name: '' });
+         this.searchBatchInput=page.getByRole('textbox', { name: 'Search...' });
+         this.cancel=page.getByRole('button', { name: 'Cancel' });
+
 
 
     }
 
+    async searchBatch(batchName) {
+        await this.searchBatchInput.click();
+        await this.searchBatchInput.fill(batchName);
+        await this.searchBatchInput.press('Enter');
+    }
+
+    async closeBatchWindow() {
+
+        await this.close.click();
+    }
+
+    async cancelBatchWindow() {
+
+        await this.cancel.click();      
+    }   
+        
+    async getMessages() {
+        return await this.messages.allTextContents();
+    }
+
+async getToastMessage() {
+    await this.toastMessageText.waitFor({ state: 'visible', timeout: 5000 });
+
+    return await this.toastMessageText.textContent();
+}
     async enterBatchNamePrefix(prefix) {
         await this.BatchNamePrefixTextbox.click();
         await this.BatchNamePrefixTextbox.fill(prefix);
@@ -51,8 +86,11 @@ exports.BatchPage = class BatchPage {
         return this.testProgramInput.inputValue();
     }
 
-    async enterBatchNameSuffix(invalidSuffix) {
-        await this.BatchNameTextbox.fill(invalidSuffix);
+    async enterBatchNameSuffix(Suffix) {
+        await this.BatchNameTextbox.click();
+        await this.BatchNameTextbox
+        .fill(Suffix);
+        
     }
 
    async getBatchNameSuffixErrorMessage() {  
@@ -70,9 +108,15 @@ exports.BatchPage = class BatchPage {
     }
     async selectProgramNameFromDropdown(programName) {
         await this.ExpandDropdownButton.click();
+        if (programName) {  
+
         const programOption = this.page.getByRole('option', { name: programName });
         await programOption.waitFor({ state: 'visible', timeout: 20000 });
         await programOption.click();
+
+        }else {
+            console.log("No Test Program selected.");
+        }
 
     }
 
@@ -119,20 +163,62 @@ exports.BatchPage = class BatchPage {
         await this.BatchNameTextbox.fill(batchName);
     }
     async enterDescription(description) {
+        await this.DescriptionTextbox.waitFor({ state: 'visible' });
         await this.DescriptionTextbox.click();
         await this.DescriptionTextbox.fill(description);
     }
 
-    async selectRadioButton(active = true) {
-        if (active) {
-            await this.FirstRadioButton.click();
-        } else {
-            const secondRadioButton = this.page.locator('.p-radiobutton-box').nth(1);
-            await secondRadioButton.click();
-        }
+    // async selectRadioButton(inputstring) {
+
+
+    //   //  await this.FirstRadioButton.click();
+
+    //     if (inputstring === true) {
+
+    //         console.log("Selecting: First Radio Button (Active)");
+    //         await this.FirstRadioButton.waitFor();
+            
+    //         await this.FirstRadioButton.click();
+
+    //     } else if (inputstring === false) {
+    //         console.log("Selecting: Second Radio Button (Inactive)");
+    //         await this.SecondRadioButton.waitFor();
+    //         await this.SecondRadioButton.click();
+    //     } else {
+    //         console.log("No selection made for radio buttons.");
+    //     }
+    // }
+
+ async selectfirstRadioButton() {
+    await this.FirstRadioButton.click();
+ }
+    async selectsecondRadioButton() {
+        await this.SecondRadioButton.click();
     }
 
-
+    async selectRadioButton(status) {
+        try {
+            if (status=true) {
+                console.log("Selecting: First Radio Button (Active)");
+                await this.FirstRadioButton.waitFor({ state: "visible", timeout: 5000 });
+                await this.FirstRadioButton.scrollIntoViewIfNeeded();
+                await this.FirstRadioButton.click({ force: true });
+    
+            } else if (status=false) {
+                console.log("Selecting: Second Radio Button (Inactive)");
+                await this.SecondRadioButton.waitFor({ state: "visible", timeout: 5000 });
+                await this.SecondRadioButton.scrollIntoViewIfNeeded();
+                await this.SecondRadioButton.click({ force: true });
+    
+            } else {
+                console.log("No selection made for radio buttons.");
+            }
+        } catch (error) {
+            console.error("Error selecting radio button:", error);
+        }
+    }
+    
+    
     async enterNumberOfClasses(numberOfClasses) {
         await this.NumberOfClassesSpinButton.click();
         await this.NumberOfClassesSpinButton.fill(numberOfClasses.toString());

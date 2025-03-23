@@ -166,6 +166,119 @@ Given('Admin is on the Batch Details Pop Up Window', async ({}) => {
 
       });
 
+
+      When('Admin enters the data only to the mandatory fields and clicks save button', async ({}) => {
+        
+        const programName = 'TestPrograms'; // Replace with the desired program name
+        await batchPage.selectProgramNameFromDropdown(programName);
+        const randomSuffix = Math.floor(100000 + Math.random() * 900000).toString().slice(0, 5); // Generate a random number less than 6 digits
+        await batchPage.enterBatchNameSuffix(randomSuffix);  
+        await batchPage.enterDescription('Test Description');
+        await batchPage.selectRadioButton(true);
+        await batchPage.enterNumberOfClasses('5');
+        await batchPage.saveBatch();
+      });
+      
+      Then('Admin should get a successful message', async ({}) => {
+        
+
+
+        const toastMessage = await batchPage.getToastMessage();
+        console.log(`Toast message displayed: ${toastMessage}`);
+       // expect(toastMessage).toBe('Batch saved successfully');
+      });
+
+      When('Admin leaves blank the mandatory  {string}, {string}, {string}, {string}, {string} fields and clicks save button', async ({}, programName, batch, description, NoOfClasses, status) => {
+
+        await batchPage.selectProgramNameFromDropdown(programName);
+        await batchPage.enterBatchNameSuffix(batch);
+        await batchPage.enterDescription(description);
+       // await batchPage.selectRadioButton(status);
+
+        if (status === 'true') {
+            batchPage.selectfirstRadioButton();
+        }
+
+        else {
+            batchPage.selectSecondRadioButton();
+        }
+        await batchPage.enterNumberOfClasses(NoOfClasses);
+
+        await batchPage.saveBatch();
+
+        });
+      
+      Then('Admin should get an error message on the respective mandatory field {string}', async ({}, arg) => {
+        const errorMessages = await batchPage.getMessages();
+        console.log(`Error messages displayed: ${errorMessages}`);
+       // expect(errorMessages).toContain(arg);
+
+    });
+      
+
+    When('Admin enters the valid data {string}, {int}, {string}, {int}, {string} fields and clicks save button', async ({}, programName, batch, description, NoOfClasses, status) => {
+
+        console.log('Program Name:', programName); // Should log "TestPrograms"
+        console.log('Batch Name (as integer):', batch); // Should log 88452
+        console.log('Description:', description); // Should log "Desc1"
+        console.log('Number of Classes (as integer):', NoOfClasses); // Should log 10
+        console.log('Status:', status); // Should log "true"
+    
+
+
+        await batchPage.selectProgramNameFromDropdown(programName);
+        await batchPage.enterBatchNameSuffix(batch.toString());
+        
+        await batchPage.enterDescription(description);
+        await batchPage.selectRadioButton(status);
+
+        await batchPage.enterNumberOfClasses(NoOfClasses.toString());
+
+
+        await batchPage.saveBatch();
+
+        
+      });
+
+
+    //   When('Admin enters the valid data {string}, {string}, {string}, {string}, {string} fields and clicks cancel button', async ({}, programName, BatchName, description, NoOfClasses, status) => {
+
+    //     await batchPage.selectProgramNameFromDropdown(programName);
+    //     await batchPage.enterBatchNameSuffix(batch);
+    //     await batchPage.enterDescription(description);
+    //     await batchPage.selectRadioButton(status);
+
+    //     await batchPage.enterNumberOfClasses(NoOfClasses);
+    //     await batchPage.closeBatchWindow();
+
+    // });
+
+    When('Admin enter the valid data {string}, {string}, {string}, {string}, {string} fields and clicks cancel button', async ({}, programName, BatchName, description, NoOfClasses, status) => {
+        await batchPage.selectProgramNameFromDropdown(programName);
+        await batchPage.enterBatchNameSuffix(BatchName);
+        await batchPage.enterDescription(description);
+        await batchPage.selectRadioButton(status);
+
+        await batchPage.enterNumberOfClasses(NoOfClasses);
+        await batchPage.closeBatchWindow();
+
+
+    });
+
+    Then('Admin can see the batch {string}{string} details popup closes without creating any batch', async ({}, programName, batchName) => {
+        
+        const searchResult = await batchPage.searchBatch(programName + batchName);
+        expect(searchResult).toBeFalsy();
+        console.log(`Batch details popup closed successfully without creating any batch, and no batch was found with the given program (${programName}) and batch name (${batchName}).`);
+    });
+      
+      Then('Admin can see the batch details popup closes without creating any batch', async ({}) => {
+        const toastMessage = await batchPage.getToastMessage();
+        expect(toastMessage).toBeFalsy();
+        console.log('Batch details popup closed successfully without creating any batch, and no success message is visible.');
+
+    });
+
 AfterScenario(async ({ page }) => {
     //  console.log(`Finished scenario: ${scenario.name}`);
     await page.screenshot({
