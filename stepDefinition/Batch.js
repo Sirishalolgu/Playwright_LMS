@@ -279,6 +279,20 @@ Given('Admin is on the Batch Details Pop Up Window', async ({}) => {
 
     });
 
+
+    When('Admin clicks on the close icon', async ({}) => {
+
+        await batchPage.closeBatchWindow();
+
+
+    });
+      
+      Then('batch details pop up closes', async ({}) => {
+
+            await batchPage.verifyBatchDetailsPopupVisible();
+    });
+      
+
 AfterScenario(async ({ page }) => {
     //  console.log(`Finished scenario: ${scenario.name}`);
     await page.screenshot({

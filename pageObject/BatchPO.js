@@ -47,7 +47,7 @@ exports.BatchPage = class BatchPage {
          this.close= page.getByRole('button', { name: '' });
          this.searchBatchInput=page.getByRole('textbox', { name: 'Search...' });
          this.cancel=page.getByRole('button', { name: 'Cancel' });
-
+        // await page.getByText('Batch Details').click();
 
 
     }

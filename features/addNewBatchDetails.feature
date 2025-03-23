@@ -62,22 +62,22 @@ Feature: Add New Batch details pop up
 
     
     
-        Scenario Outline: Validate cancel button in Batch details pop up
-            Given Admin is on the Batch Details Pop Up Window
-            When Admin enter the valid data "<Program Name>", "<Batch Name>", "<Description>", "<Number of Classes>", "<Active or Inactive>" fields and clicks cancel button
-            Then Admin can see the batch "<Program Name>""<Batch Name>" details popup closes without creating any batch
+        # Scenario Outline: Validate cancel button in Batch details pop up
+        #     Given Admin is on the Batch Details Pop Up Window
+        #     When Admin enter the valid data "<Program Name>", "<Batch Name>", "<Description>", "<Number of Classes>", "<Active or Inactive>" fields and clicks cancel button
+        #     Then Admin can see the batch "<Program Name>""<Batch Name>" details popup closes without creating any batch
 
-            Examples:
-              | Program Name   | Batch Name | Description | Number of Classes | Active or Inactive |
-              | TestProgramsa   | 88452      | Desc1       | 10                | true               |
-              | TestProgramsa   | 88602      | Desc2       | 15                | true               |
-              | TestProgramsa   | 88901      | Desc3       | 20                | true               |
+        #     Examples:
+        #       | Program Name   | Batch Name | Description | Number of Classes | Active or Inactive |
+        #       | TestProgramsa   | 88452      | Desc1       | 10                | true               |
+        #       | TestProgramsa   | 88602      | Desc2       | 15                | true               |
+        #       | TestProgramsa   | 88901      | Desc3       | 20                | true               |
     
     
-    # Scenario: Validate close icon on the batch details pop up
-    #     Given Admin is on the Batch Details Pop Up Window
-    #     When Admin clicks on the close icon
-    #     Then batch details pop up closes
+    Scenario: Validate close icon on the batch details pop up
+        Given Admin is on the Batch Details Pop Up Window
+        When Admin clicks on the close icon
+        Then batch details pop up closes
 
 
     #     Scenario: Run a specific feature file
