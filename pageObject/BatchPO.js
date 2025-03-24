@@ -48,8 +48,22 @@ exports.BatchPage = class BatchPage {
          this.searchBatchInput=page.getByRole('textbox', { name: 'Search...' });
          this.cancel=page.getByRole('button', { name: 'Cancel' });
         // await page.getByText('Batch Details').click();
+        //await page.getByRole('row', { name: 'createdata1148 description' }).getByRole('button').nth(1).click();
+        this.deleteButtonRow1 = page.locator('.p-button-icon.pi.pi-trash').nth(0);
+       // await page.locator('.p-button-icon.pi.pi-trash').nth(0).click();
+
+       // await page.getByText('Are you sure you want to').click();
+        this.confirmationDialog = page.getByText('Are you sure you want to');
+    }
 
 
+    async deleteFirstRow() {
+        await this.deleteButtonRow1.click();
+       
+    }
+    async getConfirmationDialogText() {
+        await this.confirmationDialog.waitFor({ state: 'visible', timeout: 5000 });
+        return await this.confirmationDialog.textContent();
     }
 
     async searchBatch(batchName) {

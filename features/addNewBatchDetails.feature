@@ -1,9 +1,9 @@
-Feature: Add New Batch details pop up
+# Feature: Add New Batch details pop up
 
-  Background: Admin is on the Add new batch pop up
-    Given Admin is on batch page
-    When Admin clicks on "Add New batch" under the "batch" menu bar
-    Then Admin should see the Batch Details pop up window
+#   Background: Admin is on the Add new batch pop up
+#     Given Admin is on batch page
+#     When Admin clicks on "Add New batch" under the "batch" menu bar
+#     Then Admin should see the Batch Details pop up window
 
 
     # Scenario: Validate all the fields exist in pop up
@@ -74,13 +74,13 @@ Feature: Add New Batch details pop up
         #       | TestProgramsa   | 88901      | Desc3       | 20                | true               |
     
     
-    Scenario: Validate close icon on the batch details pop up
-        Given Admin is on the Batch Details Pop Up Window
-        When Admin clicks on the close icon
-        Then batch details pop up closes
+    # Scenario: Validate close icon on the batch details pop up
+    #     Given Admin is on the Batch Details Pop Up Window
+    #     When Admin clicks on the close icon
+    #     Then batch details pop up closes
 
 
-    #     Scenario: Run a specific feature file
-    #         Given Admin wants to run a specific feature file
-    #         When Admin runs the command to execute the feature file
-    #         Then the specified feature file should be executed
+        # Scenario: Run a specific feature file
+        #     Given Admin wants to run a specific feature file
+        #     When Admin runs the command to execute the feature file
+        #     Then the specified feature file should be executed

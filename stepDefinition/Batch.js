@@ -293,8 +293,46 @@ Given('Admin is on the Batch Details Pop Up Window', async ({}) => {
     });
       
 
+    Given('Admin wants to run a specific feature file', async ({}) => {
+
+
+
+    });
+      
+      When('Admin runs the command to execute the feature file', async ({}) => {
+
+
+
+    });
+      
+      Then('the specified feature file should be executed', async ({}) => {
+
+
+
+    });
+
+
+
+    When('Admin clicks the delete Icon on any row', async ({}) => {
+      //  await batchPage.clickonBatchButton();
+        await batchPage.deleteFirstRow();
+
+
+      });
+      
+      Then('Admin should see the confirm alert box with yes and no button', async ({}) => {
+
+        await batchPage.getConfirmationDialogText();
+      
+
+
+    });
+
+
+
+
 AfterScenario(async ({ page }) => {
-    //  console.log(`Finished scenario: ${scenario.name}`);
+
     await page.screenshot({
         path: `screenshots/screenshot_${Date.now()}.png`,
         fullPage: true,

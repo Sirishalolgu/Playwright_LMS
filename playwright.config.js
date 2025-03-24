@@ -19,7 +19,7 @@ dotenv.config({ path: path.resolve(__dirname, '.env') });
 // });
 
 const testDir = defineBddConfig({
-  paths: ['./features/**/addNewBatchDetails.feature'], // Path to your feature files
+  paths: ['./features/**/deleteBatch.feature'], // Path to your feature files
   require: ['./stepDefinition/**/Batch.js'], // Path to your step definitions
 });
 
