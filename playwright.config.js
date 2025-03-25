@@ -4,8 +4,8 @@ import { defineBddConfig } from 'playwright-bdd';
 
 const testDir = defineBddConfig({
   
-  features: ['./tests/features/01_login.feature','./tests/features/04_01_classPageValidation.feature','tests/features/04_02_addNewClassButton.feature'],
-  steps: ['./tests/stepDefinition/Loginsteps.js','./tests/stepDefinition/classPageValidationsteps.js','tests/stepDefinition/addNewClassButtonsteps.js','./tests/hooks/hooks.js'],
+  features: ['./tests/features/01_login.feature','./tests/features/04_01_classPageValidation.feature','tests/features/04_02_addNewClassButton.feature','tests/features/04_03_addNewClassPopUp.feature','tests/features/04_04_deleteClass.feature','tests/features/04_05_searchBox.feature','tests/features/04_06_editClass.feature'],
+  steps: ['./tests/stepDefinition/Loginsteps.js','./tests/stepDefinition/classPageValidationsteps.js','tests/stepDefinition/addNewClassButtonsteps.js','tests/stepDefinition/addNewClassPopUp.js','tests/stepDefinition/deleteclass.js','./tests/hooks/hooks.js','tests/stepDefinition/searchBoxsteps.js','tests/stepDefinition/editClasssteps.js'],
    
 });
 /**
@@ -18,6 +18,7 @@ const testDir = defineBddConfig({
 
 /**
  * @see https://playwright.dev/docs/test-configuration
+ * 
  */
 export default defineConfig({
   testDir,

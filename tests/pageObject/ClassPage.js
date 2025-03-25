@@ -1,3 +1,5 @@
+const testData=JSON.parse(JSON.stringify(require("../../utils/class.json")));
+
 class ClassPage {
 
     constructor(page){
@@ -34,8 +36,8 @@ class ClassPage {
         this.comments=page.getByLabel('Class Details').getByText("Comments");
         this.recording=page.getByLabel('Class Details').getByText("Recording");
         this.notes=page.getByLabel('Class Details').getByText("Notes");
-        this.activeButton=page.locator("#Active");
-        this.inactiveButton=page.locator("#Inactive");
+        this.activeButton=page.locator('input[type="radio"][value="Active"]');
+        this.inactiveButton=page.locator('input[type="radio"][value="Inactive"]');
         this.classTopicTextbox=page.locator("#classTopic")
         this.classDescriptionTextbox=page.locator("#classDescription");
         this.selectDatesTextbox=page.locator("#icon");
@@ -45,7 +47,32 @@ class ClassPage {
         this.notesTextbox=page.locator("#classNotes");
         this.recordingTextbox=page.locator("#classRecordingPath");
 
+        this.batchOption = page.getByText('text=Python101'); 
+        this.dropdownArrow = page.locator("span.p-dropdown-trigger-icon ng-tns-c171-231 pi pi-chevron-down");
+        this.radioButtons = page.locator('input[name="category"]');
+        this.dayDate=page.locator('span.p-ripple', { hasText: '27' });        
+        this.selectDate=page.getByText(testData.mandatoryfeilds.date).first();
+    
 
+        //deleteClass
+        this.closeButton = page.locator('button.p-dialog-header-icon.p-dialog-header-close.p-link.p-ripple');
+        this. deleteButton = page.locator('button.p-button-rounded.p-button-danger.p-button-icon-only');
+        this.confirmDelete=page.getByText('Confirm');
+        this.NoButton=page.locator('button.p-confirm-dialog-reject.p-button');
+        this.yesButton=page.getByRole('button',{name:'Yes'});
+        this.delete_close_Button=page.locator('button.p-dialog-header-icon.p-dialog-header-close');
+        this.classDeletemsg=page.locator('.p-toast-detail');
+
+
+        //searchbox
+        this.searchbox=page.locator("#filterGlobal");
+        this.python101text=page.locator('td[_ngcontent-tix-c217]');
+
+        //editClass
+        this.editButton = page.locator('button.p-button-rounded.p-button-success.p-button-icon-only');
+        this.classupdatemsg=page.locator('.p-toast-detail');
+
+        
     }
 
     async clickOnClass(){
@@ -66,6 +93,116 @@ class ClassPage {
         await this.classButton.waitFor({ state: 'visible', timeout: 10000 });
         console.log("Class button is visible. Clicking now...");
         await this.addNewClassButton.click();
+    }
+
+    async AddNewclass_WithMandetoryFields()
+    {
+        
+        await this.batchNameDropdown.click();
+        await this.batchNameDropdown.fill(testData.mandatoryfeilds.batchname);
+        //await this.dropdownArrow.click();
+        //await this.batchOption.click();
+        await this.classTopicTextbox.fill(testData.mandatoryfeilds.classtopic);
+        await this.selectDatesTextbox.click();
+       //await this.selectDatesTextbox.fill(testData.mandatoryfeilds.date);
+       // await this.selectDate.click();
+        //const datelog= await this.selectDatesTextbox.fill(testData.mandatoryfeilds.date);
+        
+        await this.dayDate.nth(2).click();
+      //  this.noOfClassesTesxtbox.fill(testData.mandatoryfeilds.NoOfclass);
+      // console.log(" date is"+datelog);
+       await this.staffNameDropdown.scrollIntoViewIfNeeded();
+       await this.staffNameDropdown.click();
+        await this.staffNameDropdown.fill(testData.mandatoryfeilds.staffname);
+        await this.activeButton.scrollIntoViewIfNeeded();
+      //  await this.activeButton.waitForElementState('visible'); 
+        await this.activeButton.click();
+        await this.saveButton.click();
+
+    }
+
+    async addNewclass_successMessage(expectedMessage)
+    {
+        this.page.once('dialog', async dialog => {
+            console.log(`Popup message: ${dialog.message()}`);
+            expect(dialog.message()).toBe(expectedMessage); // Validate popup message
+        });
+    }
+    async searchBoxByBatchName()
+    {
+       // await this.searchbox.click();
+        await this.searchbox.fill('Python101');
+        const allbatchNames=await this.python101text.allTextContents();
+        return allbatchNames.every(name => name.trim() === 'python101');
+       // console.log("All batch names are 'Python101':", allbatchNames);
+    }
+
+    async searchBoxByClassTopic()
+    {
+  
+        await this.searchbox.fill('Python006');
+        const allclasstopics=await this.python101text.allTextContents();
+        return allclasstopics.every(name => name.trim() === 'python006');
+      
+    }
+
+    async searchBoxByStaffName()
+    {
+        await this.searchbox.fill('Getha Takur');
+        const allclasstopics=await this.python101text.allTextContents();
+        return allclasstopics.every(name => name.trim() === 'Getha Takur');   
+    }
+    async deleteClassButton()
+    {
+        await this.addNewClassButton.click();
+        await this.closeButton.click();
+        //await this.deleteButton.first().waitFor({ state: 'visible' });
+        await this.deleteButton.first().click();
+
+        console.log ("confirmdelete",this.confirmDelete);
+      
+    }
+    async delete_NO_Button()
+    {
+        await this.NoButton.click();
+    }
+    async delete_yes_Button()
+    {
+        await this.yesButton.click();
+        const msgDelete = await this.classDeletemsg.textContent();
+        return msgDelete;
+    }
+
+    async delete_close_button()
+    {
+        await this.delete_close_Button.click();
+    }
+
+    
+    async editClassButton()
+    {
+        await this.addNewClassButton.click();
+        await this.closeButton.click();
+        await this.editButton.first().click();
+    }
+
+    async editStaffName()
+    {
+        await this.staffNameDropdown.scrollIntoViewIfNeeded();
+        await this.staffNameDropdown.click();
+         await this.staffNameDropdown.fill("Saranya M");
+         await this.saveButton.click();
+       const updatemsg= await this.classupdatemsg.textContent();
+       return updatemsg;
+    }
+
+    async editPopUP_CancelButton()
+    {
+        await this.staffNameDropdown.scrollIntoViewIfNeeded();
+        await this.staffNameDropdown.click();
+         await this.staffNameDropdown.fill("Saranya M");
+         await this.cancelButton.click();
+      
     }
 }
 
