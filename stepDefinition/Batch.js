@@ -315,21 +315,64 @@ Given('Admin is on the Batch Details Pop Up Window', async ({}) => {
 
     When('Admin clicks the delete Icon on any row', async ({}) => {
       //  await batchPage.clickonBatchButton();
+      await batchPage.clickAddBatchButton();
+      await batchPage.closeBatchWindow();
         await batchPage.deleteFirstRow();
+       // await page.pause();
 
 
       });
       
       Then('Admin should see the confirm alert box with yes and no button', async ({}) => {
 
-        await batchPage.getConfirmationDialogText();
+        console.log(await batchPage.getConfirmationDialogText());
       
 
 
     });
 
 
+    Given('Admin is on the batch confirm popup page', async ({}) => {
+        
+        await batchPage.clickAddBatchButton();
+        await batchPage.closeBatchWindow();
+          await batchPage.deleteFirstRow();
 
+      });
+      
+      When('Admin clicks on the delete icon and click yes button', async ({}) => {
+
+        await batchPage.clickYesOnConfirmationDialog();
+    });
+      
+      Then('Admin should see the successful message and the batch should be deleted', async ({}) => {
+
+      console.log(await batchPage.getSuccessBatchDeletedMessage());
+
+    });
+
+
+    When('Admin clicks on the delete icon and click no button', async ({}) => {
+  await batchPage.clickNoOnConfirmationDialog();
+
+    });
+      
+      Then('Admin should see the alert box closed and the batch is not deleted', async ({}) => {
+        const isAlertBoxClosed = await batchPage.isConfirmationDialogClosed();
+        expect(isAlertBoxClosed).toBeTruthy();
+        const isBatchDeleted = await batchPage.isBatchDeleted();
+        expect(isBatchDeleted).toBeFalsy();
+        console.log('Alert box closed successfully, and the batch was not deleted.');
+
+    });
+
+    Then('Admin should see the alert box closed', async ({}) => {
+
+        const isAlertBoxClosed = await batchPage.isConfirmationDialogClosed();
+        expect(isAlertBoxClosed).toBeTruthy();
+        console.log('Alert box closed successfully.');
+
+    });
 
 AfterScenario(async ({ page }) => {
 

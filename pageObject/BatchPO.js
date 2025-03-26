@@ -49,20 +49,72 @@ exports.BatchPage = class BatchPage {
          this.cancel=page.getByRole('button', { name: 'Cancel' });
         // await page.getByText('Batch Details').click();
         //await page.getByRole('row', { name: 'createdata1148 description' }).getByRole('button').nth(1).click();
-        this.deleteButtonRow1 = page.locator('.p-button-icon.pi.pi-trash').nth(0);
+        this.deleteButtonRow1 = page.locator("//table[@role='grid']/tbody/tr[1]/td[7]/div/span[2]/button[@icon='pi pi-trash']");
        // await page.locator('.p-button-icon.pi.pi-trash').nth(0).click();
 
        // await page.getByText('Are you sure you want to').click();
         this.confirmationDialog = page.getByText('Are you sure you want to');
+       // await page.locator('tbody tr:nth-of-type(1) td:nth-of-type(7) button').click();
+        this.firstRowActionButton = page.locator('button:has(.pi-trash)');
+       // await this.firstRowActionButton.click();
+       // await page.getByRole('row', { name: 'createdata1152 description' }).getByRole('checkbox').nth(0).click();
+        this.firstRowCheckbox = page.getByRole('checkbox').nth(0);
+       // await page.locator('.cdk-overlay-backdrop').click();
+        this.backdrop = page.locator('.cdk-overlay-backdrop');
+        this.confirmationYesButton = page.getByRole('button', { name: 'Yes' });
+        this.successfulBatchDeletedMessage = page.getByText('Successfulbatch Deleted');
+        this.batchDeletedMessage = page.getByText('batch Deleted');
+
+        this.confirmationNoButton = page.getByRole('button', { name: 'No' });
+        this.searchTextbox = page.getByRole('textbox', { name: 'Search...' });
+        this.firstBatchName = page.locator("//table[@role='grid']/tbody/tr[1]/td[2]");
     }
 
 
+    async isConfirmationDialogClosed() {
+        return !(await this.confirmationDialog.isVisible());
+    }
+    async isBatchDeleted() {
+        return await this.batchDeletedMessage.isVisible();
+    }
+    
+    async fillBatchInSearch(batchName) {
+        await this.searchBatchInput.click();
+        await this.searchBatchInput.fill(batchName);
+        await this.searchBatchInput.press('Enter');
+    }
+
+    async getFirstBatchName() {
+        return await this.firstBatchName.textContent();
+    }
+
+    async clickNoOnConfirmationDialog() {
+        await this.confirmationNoButton.click();
+    }
+    async clickYesOnConfirmationDialog() {
+        await this.confirmationYesButton.click();
+    }
+
+    async getSuccessBatchDeletedMessage() {
+        return await this.successfulBatchDeletedMessage.textContent();
+    }
+    async getBatchDeletedMessage() {
+        return await this.batchDeletedMessage.textContent();
+    }
+    async clickBackdrop() {
+        
+            await this.backdrop.click();
+        
+    }
+    async clickFirstCheckbox() {
+        await this.firstRowCheckbox.click();
+    }
     async deleteFirstRow() {
         await this.deleteButtonRow1.click();
        
     }
     async getConfirmationDialogText() {
-        await this.confirmationDialog.waitFor({ state: 'visible', timeout: 5000 });
+        //await this.confirmationDialog.waitFor({ state: 'visible', timeout: 5000 });
         return await this.confirmationDialog.textContent();
     }
 
