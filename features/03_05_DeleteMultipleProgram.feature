@@ -1,9 +1,10 @@
 @muldel @all
 Feature: Delete Multiple Program
 
-  Background: 
-    Given Admin is on Program module
-
+  Background: Admin is on program module after reaching dashboard
+   Given Admin is on dashboard page after Login
+    When Admin clicks Program on the navigation bar
+  
   @tag1DeleteMultipleProgram
   Scenario: Verify Common Delete button enabled after clicking on any checkbox
     When Admin clicks any checkbox in the data table for programpage
@@ -12,13 +13,13 @@ Feature: Delete Multiple Program
   @tag2DeleteMultipleProgram
   Scenario: Verify multiple program deletion by selecting multiple check boxes
     Given Admin is on Confirm Deletion alert for programpage
-    When Admin clicks on <Yes> button on the alert for program
+    When Admin clicks on Yes button on the alert for program
     Then Admin should land on Manage Program page and can see the selected programs are deleted from the data table for programpage
 
   @tag3DeleteMultipleProgram
   Scenario: Verify Admin is able to click Yes
     Given Admin is on Confirm deletion alert for program
-    When Admin clicks on <Yes> button on the alert for program
+    When Admin clicks on Yes button on the alert for program
     Then Admin can see alert message "Successful Program Deleted"
 
   @tag4DeleteMultipleProgram

@@ -1,12 +1,13 @@
 Feature: Manage Program - Edit Program
 
   Background: Admin is on program module after reaching dashboard
-    Given Admin is on Program module
-
+  Given Admin is on dashboard page after Login
+    When Admin clicks Program on the navigation bar
+   
 @verifyEditoption
   Scenario: Verify Edit option
     When Admin clicks on Edit option for particular program
-    Then Admin lands on Program details form
+    Then Admin should see pop up window for program details
 
   Scenario: Verify title of the pop up window
     When Admin clicks on Edit option for particular program
@@ -43,5 +44,5 @@ Feature: Manage Program - Edit Program
     Then Admin verifies that the details are correctly updated
 
   Scenario: Verify close the window with "X"
-    When Admin Click on "X" button
-    Then Admin can see program details form disappear
+    When Admin Click on "X" button on Program Details 
+    Then Admin can see the Program details form disappears

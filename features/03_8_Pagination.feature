@@ -1,8 +1,9 @@
 @propagi @all
 Feature: ManageProgram_Pagination
 
-  Background: 
-    Given Admin is on Program module
+ Background: Admin is on program module after reaching dashboard
+   Given Admin is on dashboard page after Login
+    When Admin clicks Program on the navigation bar
 
   @tag1ManageProgramPagination
   Scenario: Verify Admin is able to click Next page link

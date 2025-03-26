@@ -1,3 +1,6 @@
+// json to string to js object
+// const jsonDataForLogin = JSON.parse(JSON.stringify(require("../../utils/loginFields.json")));
+const jsonDataForLogin = JSON.parse(JSON.stringify(require("../utils/loginFields.json")));
 class LoginPage{
     constructor(page){
         this.page = page;
@@ -8,16 +11,16 @@ class LoginPage{
     }
     async goto(){       
         console.log("I am in login page");
-        await this.page.goto("https://playwright-frontend-app-a9ea85794ad9.herokuapp.com/login");
+        await this.page.goto(jsonDataForLogin.url);
         await this.page.waitForLoadState('networkidle');
     }
 
     async loginWithValidCredentials(){
         //await this.page.waitForTimeout(1000);
         await this.page.waitForLoadState('networkidle');
-        await this.username.fill("Playwright@gmail.com");
+        await this.username.fill(jsonDataForLogin.username);
         await this.page.waitForTimeout(100);
-        await this.password.fill("March@2025");
+        await this.password.fill(jsonDataForLogin.password);
         await this.page.waitForTimeout(100);
         await this.loginButton.click();
         //await this.page.waitForTimeout(100);
