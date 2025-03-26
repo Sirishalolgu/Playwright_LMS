@@ -6,7 +6,7 @@ const LoginPage = require("../pageObject/LoginPage");
 const LogoutPage = require("../pageObject/LogoutPage");
 
 // Read JSON file and parse it
-const { readJsonFile } = require("../utility/fileUtils");
+const { readJsonFile } = require("../../utility/fileUtils");
 const config = readJsonFile("../utility/config.json");
 const constants = readJsonFile("../utility/constants.json");
 
