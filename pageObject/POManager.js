@@ -1,5 +1,5 @@
-const {LoginPage} = require('./LoginPage');
-const {ProgramPage} = require('./ProgramPage');
+const LoginPage = require('./LoginPage');
+const ProgramPage = require('./ProgramPage');
 
 
 class POManager{
@@ -18,4 +18,4 @@ class POManager{
         return this.programPage;
     }
 }
-module.exports = {POManager};
+module.exports = POManager;

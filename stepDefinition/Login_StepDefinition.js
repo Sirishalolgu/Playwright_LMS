@@ -5,10 +5,10 @@ import { expect } from "@playwright/test";
 const { readJsonFile } = require("../utility/fileUtils.js");
 const config = readJsonFile("../utility/config.json");
 const constants = readJsonFile("../utility/constants.json");
-const LoginPage = require("../pageObject/LoginPage.js");
+const LoginPage = require("../pageObject/LoginPage");
 const { Given, When, Then } = createBdd();
 const baseUrl = config.baseUrl;
-const { POManager } = require("../pageObject/POManager.js");
+const POManager = require("../pageObject/POManager");
 let poManager;
 
 // ========================== Given Steps ==========================

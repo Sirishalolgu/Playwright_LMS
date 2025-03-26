@@ -1,8 +1,8 @@
 import { createBdd } from 'playwright-bdd';
 
 const{Given, When, Then} = createBdd();
-const { POManager } = require('../pageObject/POManager');
-const { ProgramPage } = require('../pageObject/ProgramPage');
+const  POManager = require('../pageObject/POManager');
+const ProgramPage = require('../pageObject/ProgramPage');
 const { expect } = require('playwright/test');
 
 let poManager;
