@@ -1,28 +1,38 @@
 // @ts-check
-import { defineConfig, devices } from '@playwright/test';
-import { defineBddConfig } from 'playwright-bdd';
+  import { defineConfig, devices } from '@playwright/test';
+  import { defineBddConfig } from 'playwright-bdd';
 
-const testDir = defineBddConfig({
-  
-  features: ['./tests/features/01_login.feature','./tests/features/04_01_classPageValidation.feature','tests/features/04_02_addNewClassButton.feature','tests/features/04_03_addNewClassPopUp.feature','tests/features/04_04_deleteClass.feature','tests/features/04_05_searchBox.feature','tests/features/04_06_editClass.feature'],
-  steps: ['./tests/stepDefinition/Loginsteps.js','./tests/stepDefinition/classPageValidationsteps.js','tests/stepDefinition/addNewClassButtonsteps.js','tests/stepDefinition/addNewClassPopUp.js','tests/stepDefinition/deleteclass.js','./tests/hooks/hooks.js','tests/stepDefinition/searchBoxsteps.js','tests/stepDefinition/editClasssteps.js'],
-   
-});
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
  */
-// import dotenv from 'dotenv';
-// import path from 'path';
-// dotenv.config({ path: path.resolve(__dirname, '.env') });
+import dotenv from 'dotenv';
+import path from 'path';
+dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 /**
  * @see https://playwright.dev/docs/test-configuration
  * 
  */
+// defineBddConfig({
+//   features: 'features/batch.feature',
+//   steps: 'stepDefinition/Batch.js',
+// });
+
+const testDir = defineBddConfig({
+  features: ["features/*.feature"],
+  steps: ["stepDefinition/*.js"],
+
+});
+
+// const testDir = defineBddConfig({
+//   // testDir: './tests',
+//   features: ['./features/*.feature'], // Path to your feature files
+//   steps: ['./stepDefinition/*.js'], // Path to your step definitions
+// });
+
 export default defineConfig({
   testDir,
-  //testMatch: ['**/*.feature'],
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -32,40 +42,41 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'html',
+  reporter: [["html" ,{ outputFolder: 'playwright-report' }], ["allure-playwright"], ["line"],],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   expect: {
-    timeout:60*1000
+    timeout: 180 * 1000,
   },
-  timeout: 60*1000,
+  timeout: 180 * 1000,
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
     // baseURL: 'http://127.0.0.1:3000',
-
+    // baseURL: 'https://playwright-frontend-app-a9ea85794ad9.herokuapp.com/login',
+    screenshot: "only-on-failure",
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
-    browserName: 'chromium',
-    //screenshot:'on',
-    headless: false,
-  
+    trace: "on-first-retry",
+    browserName: "chromium",
+    // headless: false,
   },
 
   /* Configure projects for major browsers */
+  // globalSetup: require.resolve('./setup/setup.js'),
+
   projects: [
-     {
-       name: 'chromium',
-       use: { ...devices['Desktop Chrome'] },
-     },
+    {
+      name: "chromium",
+      use: { ...devices["Desktop Chrome"] },
+    },
 
-    // {
-    //   name: 'firefox',
-    //   use: { ...devices['Desktop Firefox'] },
-    // },
+    {
+      name: 'firefox',
+      use: { ...devices['Desktop Firefox'] },
+    },
 
-    // {
-    //   name: 'webkit',
-    //   use: { ...devices['Desktop Safari'] },
-    // },
+    {
+      name: 'webkit',
+      use: { ...devices['Desktop Safari'] },
+    },
 
     /* Test against mobile viewports. */
     // {
@@ -94,5 +105,5 @@ export default defineConfig({
   //   url: 'http://127.0.0.1:3000',
   //   reuseExistingServer: !process.env.CI,
   // },
+  
 });
-

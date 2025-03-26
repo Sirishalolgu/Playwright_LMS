@@ -2,7 +2,11 @@
   "name": "playwright_lms",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "npm run bddgen && npm run playwright-test",
+    "bddgen": "npx bddgen",
+    "playwright-test": "npx playwright test --headed"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Sirishalolgu/Playwright_LMS.git"
@@ -16,6 +20,7 @@
   "homepage": "https://github.com/Sirishalolgu/Playwright_LMS#readme",
   "description": "",
   "devDependencies": {
+<<<<<<< HEAD
     "@cucumber/cucumber": "^11.2.0",
     "@playwright/test": "^1.51.0",
     "@types/node": "^22.13.9",
@@ -24,5 +29,20 @@
   "dependencies": {
     "cucumber": "^6.0.7",
     "playwright": "^1.51.0"
+=======
+    "@faker-js/faker": "^9.5.0",
+    "@playwright/test": "^1.50.1",
+    "@types/node": "^22.13.10",
+    "allure-playwright": "^3.2.0",
+    "Faker": "^0.7.2",
+    "playwright-bdd": "^8.2.0"
+  },
+  "dependencies": {
+    "@cucumber/cucumber": "^11.2.0",
+    "cucumber": "^6.0.7",
+    "dotenv": "^16.4.7",
+    "playwright": "^1.51.0",
+    "tesseract.js": "^6.0.0"
+>>>>>>> 4f080269b604a8129e81b238d0d09c4296bbdb46
   }
 }
