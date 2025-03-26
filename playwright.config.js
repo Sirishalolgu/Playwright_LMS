@@ -19,9 +19,16 @@ dotenv.config({ path: path.resolve(__dirname, '.env') });
 // });
 
 const testDir = defineBddConfig({
-  paths: ['./features/**/deleteBatch.feature'], // Path to your feature files
-  require: ['./stepDefinition/**/Batch.js'], // Path to your step definitions
+  features: ["features/*.feature"],
+  steps: ["stepDefinition/*.js"],
+
 });
+
+// const testDir = defineBddConfig({
+//   // testDir: './tests',
+//   features: ['./features/*.feature'], // Path to your feature files
+//   steps: ['./stepDefinition/*.js'], // Path to your step definitions
+// });
 
 export default defineConfig({
   testDir,
@@ -34,28 +41,30 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'html',
+  reporter: [["html" ,{ outputFolder: 'playwright-report' }], ["allure-playwright"], ["line"],],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   expect: {
-    timeout: 180*1000
+    timeout: 180 * 1000,
   },
-  timeout: 180*1000,
+  timeout: 180 * 1000,
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
     // baseURL: 'http://127.0.0.1:3000',
-
+    // baseURL: 'https://playwright-frontend-app-a9ea85794ad9.herokuapp.com/login',
+    screenshot: "only-on-failure",
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
-    browserName: 'chromium',
-   // headless: false,
-  
+    trace: "on-first-retry",
+    browserName: "chromium",
+    // headless: false,
   },
 
   /* Configure projects for major browsers */
+  // globalSetup: require.resolve('./setup/setup.js'),
+
   projects: [
     {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      name: "chromium",
+      use: { ...devices["Desktop Chrome"] },
     },
 
     {
@@ -97,4 +106,3 @@ export default defineConfig({
   // },
   
 });
-
