@@ -1,26 +1,30 @@
 // @ts-check
-import { defineConfig, devices } from '@playwright/test';
-import { defineBddConfig } from 'playwright-bdd';
+  import { defineConfig, devices } from '@playwright/test';
+  import { defineBddConfig } from 'playwright-bdd';
 
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
  */
-// import dotenv from 'dotenv';
-// import path from 'path';
-// dotenv.config({ path: path.resolve(__dirname, '.env') });
+import dotenv from 'dotenv';
+import path from 'path';
+dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 /**
  * @see https://playwright.dev/docs/test-configuration
  */
+// defineBddConfig({
+//   features: 'features/batch.feature',
+//   steps: 'stepDefinition/Batch.js',
+// });
+
 const testDir = defineBddConfig({
-  features: ['tests/features/01_login.feature' ,'tests/features/03_01_Navigation_MenuBar_ManageProgramPageValidation.feature'],
-  steps: ['tests/stepDefinition/Login_StepDefinition.js' ,'tests/stepDefinition/Program_Navigation_Menubar_StepDefenition.js', 'tests/hooks/hooks.js'],
+  paths: ['./features/**/deleteBatch.feature'], // Path to your feature files
+  require: ['./stepDefinition/**/Batch.js'], // Path to your step definitions
 });
 
 export default defineConfig({
-  // testDir: './tests',
- testDir,
+  testDir,
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -54,15 +58,15 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] },
     },
 
-    // {
-    //   name: 'firefox',
-    //   use: { ...devices['Desktop Firefox'] },
-    // },
+    {
+      name: 'firefox',
+      use: { ...devices['Desktop Firefox'] },
+    },
 
-    // {
-    //   name: 'webkit',
-    //   use: { ...devices['Desktop Safari'] },
-    // },
+    {
+      name: 'webkit',
+      use: { ...devices['Desktop Safari'] },
+    },
 
     /* Test against mobile viewports. */
     // {
@@ -91,5 +95,6 @@ export default defineConfig({
   //   url: 'http://127.0.0.1:3000',
   //   reuseExistingServer: !process.env.CI,
   // },
+  
 });
 
