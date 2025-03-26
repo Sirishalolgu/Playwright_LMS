@@ -29,6 +29,9 @@
   },
   "dependencies": {
     "@cucumber/cucumber": "^11.2.0",
+    "cucumber": "^6.0.7",
+    "dotenv": "^16.4.7",
+    "playwright": "^1.51.0",
     "tesseract.js": "^6.0.0"
   }
 }
