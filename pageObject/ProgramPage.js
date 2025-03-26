@@ -1,4 +1,4 @@
-const dataSet = JSON.parse(JSON.stringify(require('../../utils/add_new_program.json')));
+const dataSet = JSON.parse(JSON.stringify(require('../utils/add_new_program.json')));
 
 class ProgramPage {
     constructor(page){

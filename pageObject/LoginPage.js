@@ -1,5 +1,6 @@
 // json to string to js object
-const jsonDataForLogin = JSON.parse(JSON.stringify(require("../../utils/loginFields.json")));
+// const jsonDataForLogin = JSON.parse(JSON.stringify(require("../../utils/loginFields.json")));
+const jsonDataForLogin = JSON.parse(JSON.stringify(require("../utils/loginFields.json")));
 class LoginPage{
     constructor(page){
         this.page = page;
