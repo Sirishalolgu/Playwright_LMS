@@ -1,5 +1,9 @@
 const { createWorker } = require("tesseract.js");
 
+    // json to string to js object
+    const jsonDataForLogin = JSON.parse(
+      JSON.stringify(require("../utils/loginFields.json"))
+    );
 class LoginPage {
   constructor(page) {
     this.page = page;
@@ -34,10 +38,10 @@ class LoginPage {
     );
     await this.page.waitForLoadState("networkidle");
 
-    // json to string to js object
-    const jsonDataForLogin = JSON.parse(
-      JSON.stringify(require("../utils/loginFields.json"))
-    );
+    // // json to string to js object
+    // const jsonDataForLogin = JSON.parse(
+    //   JSON.stringify(require("../utils/loginFields.json"))
+    // );
   }
 
   async loginWithValidCredentials() {
