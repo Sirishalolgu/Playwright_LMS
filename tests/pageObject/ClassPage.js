@@ -72,6 +72,11 @@ class ClassPage {
         this.editButton = page.locator('button.p-button-rounded.p-button-success.p-button-icon-only');
         this.classupdatemsg=page.locator('.p-toast-detail');
 
+        //pagination
+        this.nextPage=page.locator('.p-paginator-next');
+        this.previousPage=page.locator('.p-paginator-prev');
+        this.recordsOnNextPage=page.locator('.p-paginator-current');
+        this.recordsOnPreviousPage=page.locator('.p-paginator-current');
         
     }
 
@@ -111,6 +116,7 @@ class ClassPage {
         await this.dayDate.nth(2).click();
       //  this.noOfClassesTesxtbox.fill(testData.mandatoryfeilds.NoOfclass);
       // console.log(" date is"+datelog);
+        await this.staffName.click();
        await this.staffNameDropdown.scrollIntoViewIfNeeded();
        await this.staffNameDropdown.click();
         await this.staffNameDropdown.fill(testData.mandatoryfeilds.staffname);
@@ -203,6 +209,24 @@ class ClassPage {
          await this.staffNameDropdown.fill("Saranya M");
          await this.cancelButton.click();
       
+    }
+    async NextPageValidation()
+    {
+        await this.nextPage.scrollIntoViewIfNeeded();
+        await this.nextPage.click();
+        const nextrecords= await this.recordsOnNextPage.textContent();
+        console.log("nextrecords are:",nextrecords);
+        return nextrecords;
+    }
+
+    async PreviousPageValidation()
+    {
+        await this.previousPage.scrollIntoViewIfNeeded();
+        await this.previousPage.click();
+        const previousrecords= await this.recordsOnPreviousPage.textContent();
+        console.log("previousrecords are:",previousrecords);
+        return nextrecords;
+        
     }
 }
 
