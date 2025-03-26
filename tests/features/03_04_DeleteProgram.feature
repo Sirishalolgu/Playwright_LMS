@@ -1,9 +1,10 @@
 @Delpro @all
 Feature: Delete Program
 
-  Background: 
-    Given Admin is on Program module
-
+  Background: Admin is on program module after reaching dashboard
+   Given Admin is on dashboard page after Login
+    When Admin clicks Program on the navigation bar
+  
   @tag1DeleteProgram
   Scenario: Verify delete feature
     When Admin clicks on delete button for a program
@@ -12,8 +13,8 @@ Feature: Delete Program
   @tag2DeleteProgram
   Scenario: Verify Admin is able to click Yes
     Given Admin is on Confirm deletion alert for program
-    When Admin clicks on <Yes> button on the alert for program
-    Then Admin can see alert message "Successful Program Deleted"
+    When Admin clicks on Yes button on the alert for program
+    Then Admin can see alert message "Program Deleted"
 
   @tag3DeleteProgram
   Scenario: Verify Admin is able to click <No>

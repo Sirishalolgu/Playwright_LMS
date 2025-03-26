@@ -1,9 +1,14 @@
 import {test as base} from 'playwright-bdd';
-import { LoginPage } from '../pageObject/LoginPage';
 
-export const test = base.extend({
-    loginPageFixture: async({page}, use) => {
-        const loginPage = new LoginPage(page);
-        await use(loginPage);
+exports.customTest = base.extend({
+    loginPageFixture: {
+        username: "Palywright@gmail.com",
+        password: "March@2025"
+    },
+
+    addProgramFixture: {
+        programName: "dataWithJson",
+        programDescription: "free",
+        programStatus : "Active"
     }
 })

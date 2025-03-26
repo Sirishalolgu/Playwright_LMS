@@ -1,9 +1,10 @@
 @prosearch @all
 Feature: ProgramPage search_Bar
 
-  Background: 
-    Given Admin is on Program module
-
+   Background: Admin is on program module after reaching dashboard
+   Given Admin is on dashboard page after Login
+    When Admin clicks Program on the navigation bar
+  
   @tag1ProgramPagesearch_Bar
   Scenario: Verify Admin is able to search results found for program name
     When Admin enter the program to search By program name

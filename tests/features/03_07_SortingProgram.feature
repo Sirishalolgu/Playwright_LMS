@@ -1,9 +1,10 @@
 @prosort @all
 Feature: Sorting Program
 
-  Background: 
-    Given Admin is on Program module
-
+  Background: Admin is on program module after reaching dashboard
+   Given Admin is on dashboard page after Login
+    When Admin clicks Program on the navigation bar
+ 
   @tag1SortingProgram
   Scenario: Verify sorting of  Program name in Ascending or Descending order
     When Admin clicks on Arrow next to program Name
