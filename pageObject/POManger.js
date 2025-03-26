@@ -1,6 +1,6 @@
 const LoginPage = require('./LoginPage');
 const ProgramPage = require('./ProgramPage');
-const {ClassPage} = require('./ClassPage');
+const ClassPage = require('./ClassPage');
 
 class POManager{
     constructor(page){       
