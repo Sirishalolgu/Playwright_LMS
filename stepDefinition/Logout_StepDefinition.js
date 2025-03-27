@@ -6,9 +6,9 @@ const LoginPage = require("../pageObject/LoginPage");
 const LogoutPage = require("../pageObject/LogoutPage");
 
 // Read JSON file and parse it
-const { readJsonFile } = require("../utility/fileUtils");
-const config = readJsonFile("../utility/config.json");
-const constants = readJsonFile("../utility/constants.json");
+const { readJsonFile } = require("../utils/fileUtils");
+const config = readJsonFile("../utils/config.json");
+const constants = readJsonFile("../utils/constants.json");
 const baseUrl = config.baseUrl;
 
 Given("Admin is logged into the application", async ({ page }) => {
