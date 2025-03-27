@@ -50,9 +50,9 @@ When('Admin clicks on different buttons on the navigation bar', async ({page}) =
     expect(logoutButton).toEqual(title);
   });
    
-  Then('Admin should see sub menu in menu bar as {string}', async (title) =>{
+  Then('Admin should see sub menu in menu bar as Add New Program', async () =>{
     const ProgramButton = await programPage.getAddProgramButtonText();
-    expect(ProgramButton).toEqual(title);
+    expect(ProgramButton).toEqual("Add New Program");
   });
 
   Then('Admin should see the heading on paogram page as {string}', async (title) => {
@@ -114,7 +114,7 @@ When('Admin clicks on different buttons on the navigation bar', async ({page}) =
    
 
   
-  When('Admin clicks on {string} under the {string} menu bar', async ({}, newModule, module) => {
+  When('Admin clicks on New Program under the Program menu bar', async ({}) => {
     await programPage.clickOnAddProgram();   
   });
   
