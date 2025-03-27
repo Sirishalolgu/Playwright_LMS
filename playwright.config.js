@@ -38,7 +38,7 @@ export default defineConfig({
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
-  retries: process.env.CI ? 2 : 0,
+  //retries: process.env.CI ? 2 : 0,
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
@@ -54,12 +54,13 @@ export default defineConfig({
     // baseURL: 'https://playwright-frontend-app-a9ea85794ad9.herokuapp.com/login',
     screenshot: "only-on-failure",
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: "on-first-retry",
-    browserName: "chromium",
-    // headless: false,
+   // trace: "on-first-retry",
+    //browserName: "chromium",
+     headless: true,
   },
 
   /* Configure projects for major browsers */
+
   // globalSetup: require.resolve('./setup/setup.js'),
 
   projects: [
