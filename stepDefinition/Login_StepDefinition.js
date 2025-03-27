@@ -1,10 +1,10 @@
-import { logMessage } from "../utility/logger.js";
+import { logMessage } from "../utils/logger.js";
 import { createBdd } from "playwright-bdd";
 import { expect } from "@playwright/test";
 
-const { readJsonFile } = require("../utility/fileUtils.js");
-const config = readJsonFile("../utility/config.json");
-const constants = readJsonFile("../utility/constants.json");
+const { readJsonFile } = require("../utils/fileUtils.js");
+const config = readJsonFile("../utils/config.json");
+const constants = readJsonFile("../utils/constants.json");
 const LoginPage = require("../pageObject/LoginPage");
 const { Given, When, Then } = createBdd();
 const baseUrl = config.baseUrl;
