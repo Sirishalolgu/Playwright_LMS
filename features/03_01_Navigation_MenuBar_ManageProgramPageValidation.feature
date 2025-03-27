@@ -27,7 +27,7 @@ Feature: Navigation
 
   @VerifySubMenu
   Scenario: Verify sub menu displayed in program menu bar
-    Then Admin should see sub menu in menu bar as "Add New Program"
+    Then Admin should see sub menu in menu bar as Add New Program
 
   @VefiryManageProgram
   Scenario: Verify heading in manage program

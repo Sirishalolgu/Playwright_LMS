@@ -3,21 +3,18 @@ Feature: Menu bar - Program - Add New Program
   Background: Admin is on program module after reaching dashboard
    Given Admin is on dashboard page after Login
     When Admin clicks Program on the navigation bar
-    When Admin clicks on "New Program" under the "Program" menu bar
+    When Admin clicks on New Program under the Program menu bar
 
   @addNewProgramPopUp
   Scenario: Verify add New Program
-    # When Admin clicks on "New Program" under the "Program" menu bar
     Then Admin should see pop up window for program details
 
   @verifypopUpTitle
   Scenario: Verify title of the pop up window
-    # When Admin clicks on "New Program" under the "Program" menu bar
     Then Admin should see window title as "Program Details"
 
   @verifyMandatoryfield
   Scenario: Verify mandatory fields with red "*" mark
-    # When Admin clicks on "New Program" under the "Program" menu bar
     Then Admin should see red "*" mark beside mandatory field "Name"
 
   @verifySaveWithoutData

@@ -31,7 +31,7 @@
     #     When Admin enters the data only to the mandatory fields and clicks save button
     #     Then Admin should get a successful message
 
-  @batch
+  # @batch
 #   Scenario Outline: Validate input data missing for mandatory fields
 #     Given Admin is on the Batch Details Pop Up Window
 #     When Admin leaves blank the mandatory  "<Program Name>", "<Batch Name>", "<Description>", "<Number of Classes>", "<Active or Inactive>" fields and clicks save button
@@ -47,7 +47,7 @@
    
    
 
-     @batch
+    #  @batch
         # Scenario Outline: Validate save button in Batch details pop up
         #     Given Admin is on the Batch Details Pop Up Window
         #     When Admin enters the valid data "<Program Name>", <Batch Name>, "<Description>", <Number of Classes>, "<Active or Inactive>" fields and clicks save button
